@@ -21,6 +21,7 @@ int main(int argc, char *argv[]){
 
 // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv  Demostrate bit field fielter  vvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     // some bit field filter design driven code here
+    //  TEST FOR GRAYSCALE FILTERS
     Image *img_test = new GrayImage();
     img_test->LoadImage("Image-Folder/lena.jpg");
     img_test->DumpImage("img_test_raw.jpg");
@@ -35,6 +36,21 @@ int main(int argc, char *argv[]){
     filter.applySobelGradient(img_test->get_grayPixels(), img_test->get_width(), img_test->get_height());
     img_test->DumpImage("img_test_sobelGradient.jpg");
     img_test->Display_X_Server();
+
+    //  TEST FOR RGB FILTERS
+    Image *img_test1 = new RGBImage();
+    img_test1->LoadImage("Image-Folder/lena.jpg");
+    img_test1->DumpImage("img_test_raw1.jpg");
+    img_test1->Display_X_Server();
+
+    filter.applyBoxFilter(img_test1->get_rgbPixels(), img_test1->get_width(), img_test1->get_height());
+    img_test1->DumpImage("img_test_boxFilter1.jpg");
+    img_test1->Display_X_Server();
+
+    img_test1->LoadImage("Image-Folder/lena.jpg");
+    filter.applySobelGradient(img_test1->get_rgbPixels(), img_test1->get_width(), img_test1->get_height());
+    img_test1->DumpImage("img_test_sobelGradient1.jpg");
+    img_test1->Display_X_Server();
 
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     // some photo mosaic driven code here

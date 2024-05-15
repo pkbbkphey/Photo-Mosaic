@@ -14,6 +14,8 @@ public:
     void applyBoxFilter(int **pixels, int w, int h);
     void applySobelGradient(int **pixels, int w, int h);
     // void rgb_filter(int ***pixels, int w, int h);
+    void applyBoxFilter(int ***pixels, int w, int h);
+    void applySobelGradient(int ***pixels, int w, int h);
 };
 
 #endif

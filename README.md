@@ -455,4 +455,4 @@ $ tree -L 2
 ## Thanks for the following open source projects
 *   CImg (https://github.com/GreycLab/CImg)
 *   libjpeg (https://github.com/kornelski/libjpeg)
-*   catimg (https://github.com/posva/catimg)
+*   catimg (https://github.com/posva/catimg)# Photo-Mosaic
