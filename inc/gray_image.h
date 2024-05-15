@@ -5,9 +5,18 @@
 
 class GrayImage : public Image{
 private:
+    int **pixels;
 
 public:
-
+    GrayImage();
+    GrayImage(int width, int height, int **pixels);
+    ~GrayImage();
+    virtual bool LoadImage(string filename);
+    virtual void DumpImage(string filename);
+    virtual void Display_X_Server();
+    virtual void Display_ASCII();
+    virtual void Display_CMD();
+    virtual int **get_grayPixels();
 };
 
 #endif
