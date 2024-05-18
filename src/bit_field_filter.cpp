@@ -8,6 +8,22 @@ using namespace std;
 
 photo_filter::photo_filter(){}
 
+void photo_filter::apply(int **pixels, int w, int h, int8_t option){
+    if(option & BOX)        applyBoxFilter(pixels, w, h);
+    if(option & SOBEL)      applySobelGradient(pixels, w, h);
+    if(option & CONTRAST)   applyContrastStretching(pixels, w, h);
+    if(option & MOSAIC)     applyMosaicFilter(pixels, w, h, 10);
+    if(option & MEDIAN)     applyMedianFilter(pixels, w, h);
+}
+
+void photo_filter::apply(int ***pixels, int w, int h, int8_t option){
+    if(option & BOX)        applyBoxFilter(pixels, w, h);
+    if(option & SOBEL)      applySobelGradient(pixels, w, h);
+    if(option & CONTRAST)   applyContrastStretching(pixels, w, h);
+    if(option & MOSAIC)     applyMosaicFilter(pixels, w, h, 10);
+    if(option & MEDIAN)     applyMedianFilter(pixels, w, h);
+}
+
 //===========================================================================================
 //----------------------------      GRAY IMAGE FILTERS      ---------------------------------
 //===========================================================================================
@@ -152,7 +168,7 @@ void photo_filter::applyMosaicFilter(int **pixels, int w, int h, int blockSize) 
 
 // Median Filter for gray image
 void photo_filter::applyMedianFilter(int **pixels, int w, int h) {
-    int kernelSize = 3;
+    int kernelSize = 10;
     int kernelHalf = kernelSize / 2;
 
     int **temp = new int*[h];
@@ -368,7 +384,7 @@ void photo_filter::applyMosaicFilter(int ***pixels, int w, int h, int blockSize)
 
 // Median Filter for RGB image
 void photo_filter::applyMedianFilter(int ***pixels, int w, int h) {
-    int kernelSize = 3;
+    int kernelSize = 10;
     int kernelHalf = kernelSize / 2;
 
     int ***temp = new int**[h];

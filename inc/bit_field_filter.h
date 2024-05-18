@@ -7,9 +7,16 @@ using namespace std;
 class photo_filter{
 public:
     photo_filter();
-    // void bitfield_filter(int **pixels, int w, int h, int8_t option);
-    // void bitfield_filter(int ***pixels, int w, int h, int8_t option);
-// private:
+    void apply(int **pixels, int w, int h, int8_t option);
+    void apply(int ***pixels, int w, int h, int8_t option);
+    enum option {
+        BOX         = 0b00000001,
+        SOBEL       = 0b00000010,
+        CONTRAST    = 0b00000100,
+        MOSAIC      = 0b00001000,
+        MEDIAN      = 0b00010000
+    };
+private:
     // void gray_filter(int **pixels, int w, int h);
     void applyBoxFilter(int **pixels, int w, int h);
     void applySobelGradient(int **pixels, int w, int h);
