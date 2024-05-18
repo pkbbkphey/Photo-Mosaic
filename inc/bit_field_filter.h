@@ -9,6 +9,8 @@ public:
     photo_filter();
     void apply(int **pixels, int w, int h, int8_t option);
     void apply(int ***pixels, int w, int h, int8_t option);
+    void apply_order(int **pixels, int w, int h, int order);
+    void apply_order(int ***pixels, int w, int h, int order);
     enum option {
         BOX         = 0b00000001,
         SOBEL       = 0b00000010,

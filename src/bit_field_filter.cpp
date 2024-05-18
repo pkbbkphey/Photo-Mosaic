@@ -24,6 +24,80 @@ void photo_filter::apply(int ***pixels, int w, int h, int8_t option){
     if(option & MEDIAN)     applyMedianFilter(pixels, w, h);
 }
 
+void photo_filter::apply_order(int **pixels, int w, int h, int order){
+    // Arrays to store the order of each filter
+    int orders[5];
+
+    // Extract the order of each filter from the 5-digit decimal number
+    orders[0] = order % 10;
+    orders[1] = (order / 10) % 10;
+    orders[2] = (order / 100) % 10;
+    orders[3] = (order / 1000) % 10;
+    orders[4] = (order / 10000) % 10;
+
+    // Apply the filters in the specified order
+    for (int i = 1; i <= 5; ++i) {
+        if(orders[0] == i)      {
+            applyBoxFilter(pixels, w, h);
+            cout << "box... ";
+        }
+        else if(orders[1] == i) {
+            applySobelGradient(pixels, w, h);
+            cout << "sobel... ";
+        }
+        else if(orders[2] == i) {
+            applyContrastStretching(pixels, w, h);
+            cout << "contrast... ";
+        }
+        else if(orders[3] == i) {
+            applyMosaicFilter(pixels, w, h, 10);
+            cout << "mosaic... ";
+        }
+        else if(orders[4] == i) {
+            applyMedianFilter(pixels, w, h);
+            cout << "median... ";
+        }
+    }
+    cout << "  === finish ===\n";
+}
+
+void photo_filter::apply_order(int ***pixels, int w, int h, int order){
+    // Arrays to store the order of each filter
+    int orders[5];
+
+    // Extract the order of each filter from the 5-digit decimal number
+    orders[0] = order % 10;
+    orders[1] = (order / 10) % 10;
+    orders[2] = (order / 100) % 10;
+    orders[3] = (order / 1000) % 10;
+    orders[4] = (order / 10000) % 10;
+
+    // Apply the filters in the specified order
+    for (int i = 1; i <= 5; ++i) {
+        if(orders[0] == i)      {
+            applyBoxFilter(pixels, w, h);
+            cout << "box... ";
+        }
+        else if(orders[1] == i) {
+            applySobelGradient(pixels, w, h);
+            cout << "sobel... ";
+        }
+        else if(orders[2] == i) {
+            applyContrastStretching(pixels, w, h);
+            cout << "contrast... ";
+        }
+        else if(orders[3] == i) {
+            applyMosaicFilter(pixels, w, h, 10);
+            cout << "mosaic... ";
+        }
+        else if(orders[4] == i) {
+            applyMedianFilter(pixels, w, h);
+            cout << "median... ";
+        }
+    }
+    cout << "  === finish ===\n";
+}
+
 //===========================================================================================
 //----------------------------      GRAY IMAGE FILTERS      ---------------------------------
 //===========================================================================================

@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
     //  TEST FOR GRAYSCALE FILTERS
     photo_filter filter;
     Image *img0 = new GrayImage();
-    img0->LoadImage("Image-Folder/lena.jpg");
+    /*img0->LoadImage("Image-Folder/lena.jpg");
     img0->DumpImage("Image-Folder/results/a0.jpg");
     img0->Display_X_Server();
 
@@ -40,12 +40,24 @@ int main(int argc, char *argv[]){
     img0->LoadImage("Image-Folder/noise.jpg");
     filter.apply(img0->get_grayPixels(), img0->get_width(), img0->get_height(), filter.MEDIAN);
     img0->DumpImage("Image-Folder/results/a3.jpg");
+    img0->Display_X_Server();*/
+
+    img0->LoadImage("Image-Folder/lena.jpg");
+    img0->Display_X_Server();
+
+    filter.apply_order(img0->get_grayPixels(), img0->get_width(), img0->get_height(), 10200);
+    img0->DumpImage("Image-Folder/results/a4.jpg");
+    img0->Display_X_Server();
+
+    img0->LoadImage("Image-Folder/lena.jpg");
+    filter.apply_order(img0->get_grayPixels(), img0->get_width(), img0->get_height(), 10230);
+    img0->DumpImage("Image-Folder/results/a5.jpg");
     img0->Display_X_Server();
 
 
     //  TEST FOR RGB FILTERS
     Image *img1 = new RGBImage();
-    img1->LoadImage("Image-Folder/lena.jpg");
+    /*img1->LoadImage("Image-Folder/lena.jpg");
     img1->DumpImage("Image-Folder/results/b0.jpg");
     img1->Display_X_Server();
 
@@ -61,6 +73,18 @@ int main(int argc, char *argv[]){
     img1->LoadImage("Image-Folder/noise.jpg");
     filter.apply(img1->get_rgbPixels(), img1->get_width(), img1->get_height(), filter.MEDIAN);
     img1->DumpImage("Image-Folder/results/b3.jpg");
+    img1->Display_X_Server();*/
+
+    img1->LoadImage("Image-Folder/lena.jpg");
+    img1->Display_X_Server();
+
+    filter.apply_order(img1->get_rgbPixels(), img1->get_width(), img1->get_height(), 2010);
+    img1->DumpImage("Image-Folder/results/b4.jpg");
+    img1->Display_X_Server();
+
+    img1->LoadImage("Image-Folder/lena.jpg");
+    filter.apply_order(img1->get_rgbPixels(), img1->get_width(), img1->get_height(), 1020);
+    img1->DumpImage("Image-Folder/results/b5.jpg");
     img1->Display_X_Server();
 
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
