@@ -76,7 +76,6 @@ RGBImage* PhotoMosaic::generate(string tilePath, string orignPath){
                     min_index = idx;
                 }
             }
-            cout << min_index << "\n";
             // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
             // vvvvvvvvvv place the tile into place vvvvvvvvvvvv

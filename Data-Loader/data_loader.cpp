@@ -226,3 +226,32 @@ bool Data_Loader::File_Exists(const string &filename){
     ifstream file(filename.c_str());
     return file.good();
 }
+
+// vvvvvvvvvvvvvv !!! MODIFIED AREA !!! vvvvvvvvvvvvvvvvvv
+void Data_Loader::Dump_RGBA_PNG(int w, int h, int ***pixels, int **alpha, string filename) {
+    // cout << (pixels != nullptr) << (alpha != nullptr) << (w > 0) << (h > 0) << "\n";
+    assert(pixels != nullptr && alpha != nullptr && w > 0 && h > 0);
+    // Create a CImg object with the specified width, height, and 4 channels (RGBA)
+    CImg<unsigned char> img(w, h, 1, 4);
+
+    // Iterate through the pixel values and set them in the CImg object
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            // Set the RGBA pixel values
+            img(x, y, 0) = pixels[y][x][0]; // Red channel
+            img(x, y, 1) = pixels[y][x][1]; // Green channel
+            img(x, y, 2) = pixels[y][x][2]; // Blue channel
+            img(x, y, 3) = alpha[y][x];     // Alpha channel
+        }
+    }
+
+    // Ensure the filename ends with ".png"
+    if (filename.substr(filename.find_last_of(".") + 1) != "png") {
+        filename += ".png";
+    }
+
+    // Save the image to a file
+    img.save(filename.c_str());
+}
+
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

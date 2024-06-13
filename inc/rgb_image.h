@@ -4,7 +4,7 @@
 #include "image.h"
 
 class RGBImage : public Image{
-private:
+protected:
     int ***pixels;
 
 public:
@@ -17,6 +17,7 @@ public:
     virtual void Display_ASCII();
     virtual void Display_CMD();
     int ***get_rgbPixels();
+    
 };
 
 #endif

@@ -25,6 +25,8 @@ public:
     // virtual int ***get_pixels();
     int get_width();
     int get_height();
+
+    virtual void setAlpha(unsigned char **alpha);
 };
 
 #endif

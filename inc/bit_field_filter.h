@@ -19,7 +19,7 @@ public:
         MEDIAN      = 0b00010000
     };
     void applyAnisotropicDiffusion(int** pixels, int w, int h, int iterations, double lambda, double kappa);
-private:
+// private:     // Not setting these filters to private because some other algorithms use these filters
     // void gray_filter(int **pixels, int w, int h);
     void applyBoxFilter(int **pixels, int w, int h);
     void applySobelGradient(int **pixels, int w, int h);

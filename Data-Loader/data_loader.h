@@ -36,6 +36,10 @@ public:
     void Display_RGB_CMD(string filename);
     bool List_Directory(string directoryPath, vector<string> &filenames);
 
+    // vvvvvvvvvvvvvv !!! MODIFIED AREA !!! vvvvvvvvvvvvvvvvvv
+    void Dump_RGBA_PNG(int w, int h, int ***pixels, int **alpha, string filename);
+    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 private:
     bool File_Exists(const string &filename);
 };
