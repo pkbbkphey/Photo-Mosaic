@@ -5,10 +5,11 @@
 using namespace std;
    
 RGBImage::RGBImage(): Image(0, 0){
-
+    // cout << "RGBImage ctor\n";
 }
 RGBImage::RGBImage(int width, int height, int ***pixels): Image(width, height), pixels(pixels) {
     // no need to new pixels, since it should be newed in LoadImage()
+    // cout << "RGBImage ctor\n";
 }
 RGBImage::~RGBImage(){
     for(int i = 0; i < height; ++i){

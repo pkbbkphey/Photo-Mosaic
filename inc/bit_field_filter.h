@@ -18,6 +18,7 @@ public:
         MOSAIC      = 0b00001000,
         MEDIAN      = 0b00010000
     };
+    void applyAnisotropicDiffusion(int** pixels, int w, int h, int iterations, double lambda, double kappa);
 private:
     // void gray_filter(int **pixels, int w, int h);
     void applyBoxFilter(int **pixels, int w, int h);

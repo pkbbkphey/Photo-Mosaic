@@ -102,6 +102,56 @@ void photo_filter::apply_order(int ***pixels, int w, int h, int order){
 //----------------------------      GRAY IMAGE FILTERS      ---------------------------------
 //===========================================================================================
 
+// Define a Gaussian function
+double gaussian(double x, double sigma) {
+    return exp(-(x * x) / (2 * sigma * sigma));
+}
+
+// Anisotropic diffusion function
+void photo_filter::applyAnisotropicDiffusion(int** pixels, int w, int h, int iterations, double lambda, double kappa) {
+    // Temporary buffer for the smoothed image
+    std::vector<std::vector<int>> smoothedImage(h, std::vector<int>(w));
+
+    // Compute gradient magnitude and direction
+    std::vector<std::vector<double>> gradientMagnitude(h, std::vector<double>(w));
+    std::vector<std::vector<double>> gradientDirection(h, std::vector<double>(w));
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            double gx = (x < w - 1) ? pixels[y][x + 1] - pixels[y][x] : 0;
+            double gy = (y < h - 1) ? pixels[y + 1][x] - pixels[y][x] : 0;
+            gradientMagnitude[y][x] = sqrt(gx * gx + gy * gy);
+            gradientDirection[y][x] = atan2(gy, gx);
+        }
+    }
+
+    // Apply anisotropic diffusion
+    for (int iter = 0; iter < iterations; ++iter) {
+        for (int y = 0; y < h; ++y) {
+            for (int x = 0; x < w; ++x) {
+                double c = gradientMagnitude[y][x];
+                double nx = (x < w - 1) ? gradientMagnitude[y][x + 1] : c;
+                double ny = (y < h - 1) ? gradientMagnitude[y + 1][x] : c;
+                double n = sqrt(nx * nx + ny * ny);
+                double theta = gradientDirection[y][x];
+                double diff = n - c;
+                double weight = exp(-(diff * diff) / (kappa * kappa));
+
+                // Update pixel intensity using anisotropic diffusion equation
+                double updatedIntensity = pixels[y][x] + lambda * weight * diff * cos(2 * theta);
+                smoothedImage[y][x] = round(updatedIntensity);
+            }
+        }
+        // Update the original image with the smoothed image
+        for (int y = 0; y < h; ++y) {
+            for (int x = 0; x < w; ++x) {
+                pixels[y][x] = smoothedImage[y][x];
+            }
+        }
+    }
+}
+
+
+
 // Box Filter for gray image
 void photo_filter::applyBoxFilter(int **pixels, int w, int h) {
     int **temp = new int*[h];
@@ -242,7 +292,7 @@ void photo_filter::applyMosaicFilter(int **pixels, int w, int h, int blockSize) 
 
 // Median Filter for gray image
 void photo_filter::applyMedianFilter(int **pixels, int w, int h) {
-    int kernelSize = 10;
+    int kernelSize = 7;
     int kernelHalf = kernelSize / 2;
 
     int **temp = new int*[h];
@@ -458,7 +508,7 @@ void photo_filter::applyMosaicFilter(int ***pixels, int w, int h, int blockSize)
 
 // Median Filter for RGB image
 void photo_filter::applyMedianFilter(int ***pixels, int w, int h) {
-    int kernelSize = 10;
+    int kernelSize = 7;
     int kernelHalf = kernelSize / 2;
 
     int ***temp = new int**[h];

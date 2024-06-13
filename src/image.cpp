@@ -3,6 +3,9 @@
 
 using namespace std;
 
+// Define the static member variable
+Data_Loader Image::imagefile;       // This is very important! It takes 3 hours to find this bug
+
 Image::Image(int width, int height): width(width), height(height) {
 
 }
