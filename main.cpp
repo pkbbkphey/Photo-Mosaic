@@ -75,8 +75,9 @@ int main(int argc, char *argv[]){
 
 // vvvvvvvvvvvvvvvvvvvvvvvvvvvv  Demostrate for image matting  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     matting mattingObj;
-    transparentImage *transObj = mattingObj.applyMatting("Image-Folder/flower1.jpg");
-    transObj->DumpImage("Image-Folder/results/matt/mattImg7.png");
+    // mattingObj.setMode(mattingObj.extract_text);
+    transparentImage *transObj = mattingObj.applyMatting("Image-Folder/menu.jpg");
+    transObj->DumpImage("Image-Folder/results/matt/mattImg14.png");
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     return 0;
 }
