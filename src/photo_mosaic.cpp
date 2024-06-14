@@ -7,12 +7,12 @@
 using namespace std;
 
 RGBImage* PhotoMosaic::generate(string tilePath, string orignPath){
-    cout << "Starting\n";
+    cout << "      starting...\n";
     Data_Loader temp_loader;
     vector<string> tileNames;
     vector<float> tileRAvg, tileGAvg, tileBAvg;
     temp_loader.List_Directory(tilePath, tileNames);
-    cout << "parsing small photos\n";
+    cout << "      analyzing small photos...\n";
     for(auto tileIt: tileNames){
         int w, h;
         int ***pixels = temp_loader.Load_RGB(tileIt, &w, &h);
@@ -34,7 +34,7 @@ RGBImage* PhotoMosaic::generate(string tilePath, string orignPath){
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     }
     
-    cout << "reading big photo and new the mosaic photo\n";
+    cout << "      reading big photo and new the mosaic photo...\n";
     int orignW, orignH; 
     int ***orignPixels = temp_loader.Load_RGB(orignPath, &orignW, &orignH);
     // int mosaicPixels[orignH][orignW][3];
@@ -46,7 +46,7 @@ RGBImage* PhotoMosaic::generate(string tilePath, string orignPath){
         }
     }
 
-    cout << "generating mosaic photo\n";
+    cout << "      generating mosaic photo...\n";
     for(int gridY = 0; gridY < orignH; gridY += tileSize){
         for(int gridX = 0; gridX < orignW; gridX += tileSize){
 
@@ -91,6 +91,6 @@ RGBImage* PhotoMosaic::generate(string tilePath, string orignPath){
     }
 
     RGBImage* mosaicObj = new RGBImage(orignW, orignH, mosaicPixels);
-    cout << "finish!\n";
+    cout << "      finish!\n";
     return mosaicObj;
 }

@@ -45,6 +45,6 @@ int Image::get_height(){
     return height;
 }
 
-void Image::setAlpha(unsigned char **alpha){
+void Image::setAlpha(int **alpha){
     cout << "YOU CALLED A virtual FUNCTION.\n";
 }

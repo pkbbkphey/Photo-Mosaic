@@ -39,26 +39,26 @@ void photo_filter::apply_order(int **pixels, int w, int h, int order){
     for (int i = 1; i <= 5; ++i) {
         if(orders[0] == i)      {
             applyBoxFilter(pixels, w, h);
-            cout << "box... ";
+            cout << "      box...\n";
         }
         else if(orders[1] == i) {
             applySobelGradient(pixels, w, h);
-            cout << "sobel... ";
+            cout << "      sobel...\n";
         }
         else if(orders[2] == i) {
             applyContrastStretching(pixels, w, h);
-            cout << "contrast... ";
+            cout << "      contrast...\n";
         }
         else if(orders[3] == i) {
             applyMosaicFilter(pixels, w, h, 10);
-            cout << "mosaic... ";
+            cout << "      mosaic...\n";
         }
         else if(orders[4] == i) {
             applyMedianFilter(pixels, w, h);
-            cout << "median... ";
+            cout << "      median...\n";
         }
     }
-    cout << "  === finish ===\n";
+    cout << "      finish\n";
 }
 
 void photo_filter::apply_order(int ***pixels, int w, int h, int order){
@@ -76,26 +76,26 @@ void photo_filter::apply_order(int ***pixels, int w, int h, int order){
     for (int i = 1; i <= 5; ++i) {
         if(orders[0] == i)      {
             applyBoxFilter(pixels, w, h);
-            cout << "box... ";
+            cout << "      box...\n";
         }
         else if(orders[1] == i) {
             applySobelGradient(pixels, w, h);
-            cout << "sobel... ";
+            cout << "      sobel...\n";
         }
         else if(orders[2] == i) {
             applyContrastStretching(pixels, w, h);
-            cout << "contrast... ";
+            cout << "      contrast...\n";
         }
         else if(orders[3] == i) {
             applyMosaicFilter(pixels, w, h, 10);
-            cout << "mosaic... ";
+            cout << "      mosaic...\n";
         }
         else if(orders[4] == i) {
             applyMedianFilter(pixels, w, h);
-            cout << "median... ";
+            cout << "      median...\n";
         }
     }
-    cout << "  === finish ===\n";
+    cout << "      finish\n";
 }
 
 //===========================================================================================

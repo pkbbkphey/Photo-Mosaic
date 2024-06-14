@@ -6,78 +6,180 @@
 #include "photo_mosaic.h"
 #include "matting.h"
 
+using namespace std;
+
 int main(int argc, char *argv[]){
 // vvvvvvvvvvvvvvv  Demonstrate image loading, dumping, and displaying  vvvvvvvvvvvvvvvvvvvvvvv
-    // Image *img1 = new GrayImage();
-    // img1->LoadImage("Image-Folder/mnist/img_100.jpg");
-    // img1->DumpImage("img1.jpg");
-    // img1->Display_X_Server();
-    // img1->Display_CMD();
+
+    cout << "\nvvvvvvvvvvvvvvv  Demonstrate image loading, dumping, and displaying  vvvvvvvvvvvvvvvvvvvvvvv\n";
+    Image *grayImg = new GrayImage();
+    grayImg->LoadImage("Image-Folder/mnist/img_100.jpg");
+    grayImg->DumpImage("img1.jpg");
+    grayImg->Display_CMD();
+    grayImg->Display_X_Server();
     
-    // Image *img2 = new RGBImage();
-    // img2->LoadImage("Image-Folder/lena.jpg");
-    // img2->DumpImage("img2.jpg");
-    // img2->Display_X_Server();
-    // img2->Display_CMD();
+    Image *RGBImg = new RGBImage();
+    RGBImg->LoadImage("Image-Folder/lena.jpg");
+    RGBImg->DumpImage("img2.jpg");
+    RGBImg->Display_CMD();
+    RGBImg->Display_X_Server();
+
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv  Demostrate bit field filter  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     // some bit field filter design driven code here
+
+    cout << "\nvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv  Demostrate bit field filter  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv\n";
     //  TEST FOR GRAYSCALE FILTERS
     photo_filter filter;
-    Image *img0 = new GrayImage();
-    img0->LoadImage("Image-Folder/noise.jpg");
-    img0->DumpImage("Image-Folder/results/c0.jpg");
-    img0->Display_X_Server();
 
-    // filter.apply_order(img0->get_grayPixels(), img0->get_width(), img0->get_height(), 20031);
-    // img0->DumpImage("Image-Folder/results/c1.jpg");
-    // img0->Display_X_Server();
+    /*grayImg->LoadImage("Image-Folder/noise.jpg");
+    // grayImg->DumpImage("Image-Folder/results/c0.jpg");
+    grayImg->Display_X_Server();
 
-    filter.applyAnisotropicDiffusion(img0->get_grayPixels(), img0->get_width(), img0->get_height(), 10, 0.3, 18);
-    img0->DumpImage("Image-Folder/results/c2.jpg");
-    img0->Display_X_Server();
+    filter.applyAnisotropicDiffusion(grayImg->get_grayPixels(), grayImg->get_width(), grayImg->get_height(), 10, 0.3, 18);
+    // grayImg->DumpImage("Image-Folder/results/c2.jpg");
+    grayImg->Display_X_Server();*/
 
-    //  TEST FOR RGB FILTERS
-    // Image *img1 = new RGBImage();
-    /*img1->LoadImage("Image-Folder/lena.jpg");
-    img1->DumpImage("Image-Folder/results/b0.jpg");
-    img1->Display_X_Server();
+    //  Test for grayscale bit field filters
+    cout << "  =============== Case 1 ===============\n";
+    cout << "    original image\n";
+    grayImg->LoadImage("Image-Folder/lena.jpg");
+    grayImg->Display_X_Server();
 
-    filter.apply(img1->get_rgbPixels(), img1->get_width(), img1->get_height(), 0b00001100);*/
+    cout << "    filtered image (0b00001100)\n";
+    filter.apply(grayImg->get_grayPixels(), grayImg->get_width(), grayImg->get_height(), 0b00001100);
+    grayImg->Display_X_Server();
 
+
+    //  Test for RGB bit field filters
+    cout << "  =============== Case 2 ===============\n";
+    cout << "    original image\n";
+    RGBImg->LoadImage("Image-Folder/lena.jpg");
+    RGBImg->DumpImage("Image-Folder/results/b0.jpg");
+    RGBImg->Display_X_Server();
+
+    cout << "    filtered image (0b00001100)\n";
+    filter.apply(RGBImg->get_rgbPixels(), RGBImg->get_width(), RGBImg->get_height(), 0b00001100);
+    RGBImg->Display_X_Server();
+
+
+    //  Test for RGB bit field filters with order
+    cout << "  =============== Case 3 ===============\n";
+    cout << "    original image\n";
+    grayImg->LoadImage("Image-Folder/lena.jpg");
+    // grayImg->DumpImage("Image-Folder/results/c0.jpg");
+    grayImg->Display_X_Server();
+
+    cout << "    filtered image\n";
+    filter.apply_order(grayImg->get_grayPixels(), grayImg->get_width(), grayImg->get_height(), 20031);
+    // grayImg->DumpImage("Image-Folder/results/c1.jpg");
+    grayImg->Display_X_Server();
+
+    cout << "  =============== Case 4 ===============\n";
+    cout << "    original image\n";
+    grayImg->LoadImage("Image-Folder/lena.jpg");
+    grayImg->Display_X_Server();
+
+    cout << "    filtered image 1\n";
+    filter.apply_order(grayImg->get_grayPixels(), grayImg->get_width(), grayImg->get_height(), 2010);
+    grayImg->Display_X_Server();
+
+    cout << "    filtered image 2\n";
+    grayImg->LoadImage("Image-Folder/lena.jpg");
+    filter.apply_order(grayImg->get_grayPixels(), grayImg->get_width(), grayImg->get_height(), 1020);
+    grayImg->Display_X_Server();
 
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv  Demostrate for photo mosaic  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     // some photo mosaic driven code here
-    /*PhotoMosaic* mosaicObj = new PhotoMosaic();
-    RGBImage *mosaicImg;
-    mosaicImg = mosaicObj->generate("Image-Folder/cifar10", "Image-Folder/girl_2x.png");
-    mosaicImg->Display_X_Server();
-    mosaicImg->DumpImage("Image-Folder/results/mosaicImg.jpg");*/
+
+    cout << "\nvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv  Demostrate for photo mosaic  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv\n";
+
+    cout << "  =============== Case 1 ===============\n";
+    cout << "    original image\n";
+    RGBImg->LoadImage("Image-Folder/girl_2x.png");
+    RGBImg->Display_X_Server();
+
+    cout << "    mosaic image\n";
+    PhotoMosaic* mosaicObj = new PhotoMosaic();
+    RGBImg = mosaicObj->generate("Image-Folder/cifar10", "Image-Folder/girl_2x.png");
+    RGBImg->Display_X_Server();
+    RGBImg->DumpImage("Image-Folder/results/mosaicImg.jpg");
+
+    cout << "  =============== Case 2 ===============\n";
+    cout << "    original image\n";
+    RGBImg->LoadImage("Image-Folder/CKS_Memorial_Hall.jpg");
+    RGBImg->Display_X_Server();
+
+    cout << "    mosaic image\n";
+    RGBImg = mosaicObj->generate("Image-Folder/cifar10", "Image-Folder/CKS_Memorial_Hall.jpg");
+    RGBImg->Display_X_Server();
+
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     // more ...
-// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv  Demostrate for png  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    /*Image *transImage = new transparentImage();
-    transImage->LoadImage("Image-Folder/lena.jpg");
-    int **alpha = new int *[transImage->get_height()];
-    for(int j = 0; j < transImage->get_height(); ++j){
-        alpha[j] = new int [transImage->get_width()];
-        for(int i = 0; i < transImage->get_width(); ++i){
-            alpha[j][i] = 100;
+// vvvvvvvvvvvvvvvvvvvvvvvvv  Demostrate for transparent image  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+    cout << "\nvvvvvvvvvvvvvvvvvvvvvvvvv  Demostrate for transparent image  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv\n";
+    RGBImg->LoadImage("Image-Folder/lena.jpg");
+    RGBImg->Display_X_Server();
+
+    Image *transImg = new transparentImage();
+    transImg->LoadImage("Image-Folder/lena.jpg");
+    int w = transImg->get_width(); 
+    int h = transImg->get_height();
+    int **alpha = new int *[h];
+    for(int j = 0; j < h; ++j){
+        alpha[j] = new int [w];
+        for(int i = 0; i < w; ++i){
+            alpha[j][i] = 255 * (float(i)/w) * (float(j)/h);
         }
     }
-    transImage->setAlpha(alpha);
-    transImage->DumpImage("trans_png.png");*/
+    transImg->setAlpha(alpha);
+    transImg->DumpImage("Image-Folder/results/trans_png.png");
+    transImg->Display_X_Server();
+
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 // vvvvvvvvvvvvvvvvvvvvvvvvvvvv  Demostrate for image matting  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+    cout << "\nvvvvvvvvvvvvvvvvvvvvvvvvvvvv  Demostrate for image matting  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv\n";
+
+    cout << "  =============== Case 1 ===============\n";
+    cout << "    original image\n";
+    RGBImg->LoadImage("Image-Folder/bird.jpg");
+    RGBImg->Display_X_Server();
+
+    cout << "    matted image (mode = remove_blurred)\n";
     matting mattingObj;
-    // mattingObj.setMode(mattingObj.extract_text);
-    transparentImage *transObj = mattingObj.applyMatting("Image-Folder/menu.jpg");
-    transObj->DumpImage("Image-Folder/results/matt/mattImg14.png");
+    mattingObj.setMode(mattingObj.remove_blurred);
+    transImg = mattingObj.applyMatting("Image-Folder/bird.jpg");
+    transImg->DumpImage("Image-Folder/results/matt/mattImg14.png");
+    transImg->Display_X_Server();
+    
+    cout << "  =============== Case 2 ===============\n";
+    cout << "    original image\n";
+    RGBImg->LoadImage("Image-Folder/ladybug.jpg");
+    RGBImg->Display_X_Server();
+
+    cout << "    matted image (mode = remove_blurred_smoothly)\n";
+    mattingObj.setMode(mattingObj.remove_blurred_smoothly);
+    transImg = mattingObj.applyMatting("Image-Folder/ladybug.jpg");
+    transImg->Display_X_Server();
+
+    cout << "  =============== Case 3 ===============\n";
+    cout << "    original image\n";
+    RGBImg->LoadImage("Image-Folder/texts.jpg");
+    RGBImg->Display_X_Server();
+
+    cout << "    matted image (mode = extract_text)\n";
+    mattingObj.setMode(mattingObj.extract_text);
+    transImg = mattingObj.applyMatting("Image-Folder/texts.jpg");
+    transImg->Display_X_Server();
+
+
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     return 0;
 }

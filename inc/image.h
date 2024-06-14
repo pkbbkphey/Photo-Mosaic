@@ -26,7 +26,7 @@ public:
     int get_width();
     int get_height();
 
-    virtual void setAlpha(unsigned char **alpha);
+    virtual void setAlpha(int **alpha);
 };
 
 #endif
