@@ -6,12 +6,12 @@ using namespace std;
 
 class Image{
 protected:
-    int width, height;
+    int width = 0, height = 0;
     string fname; // store filename for Display_CMD()
     static Data_Loader imagefile;
 public:
     Image(int width, int height);
-    ~Image();
+    virtual ~Image();
     virtual bool LoadImage(string filename);
     virtual void DumpImage(string filename);
     virtual void Display_X_Server();

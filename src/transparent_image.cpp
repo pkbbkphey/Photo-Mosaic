@@ -6,9 +6,9 @@ transparentImage::transparentImage() : RGBImage() {
     alpha = nullptr;
 }
 
-transparentImage::transparentImage(int width, int height, int ***pixels, int **alpha)
+transparentImage::transparentImage(int width, int height, int ***pixels, int **alpha_)
     : RGBImage(width, height, pixels) {
-    this->alpha = alpha;
+    this->alpha = alpha_;
 }
 
 // Destructor
@@ -19,6 +19,7 @@ transparentImage::~transparentImage() {
         }
         delete[] alpha;
     }
+    // cout << "~transparentImage()\n";
 }
 
 void transparentImage::Display_X_Server(){
@@ -33,6 +34,14 @@ void transparentImage::Display_X_Server(){
         }
     }
     imagefile.Display_RGB_X_Server(width, height, temp_pixels);
+    // Clean up temp_pixels
+    for(int j = 0; j < height; ++j){
+        for(int i = 0; i < width; ++i){
+            delete[] temp_pixels[j][i];
+        }
+        delete[] temp_pixels[j];
+    }
+    delete[] temp_pixels;
 }
 
 // Implementation of DumpImage
@@ -44,6 +53,13 @@ void transparentImage::DumpImage(string filename) {
     imagefile.Dump_RGBA_PNG(width, height, pixels, alpha, filename);
 }
 
-void transparentImage::setAlpha(int **alpha){
-    this->alpha = alpha;
+void transparentImage::setAlpha(int **alpha_){
+    // Clean up before loading next alpha
+    if (alpha != nullptr) {
+        for (int i = 0; i < height; ++i) {
+            delete[] alpha[i];
+        }
+        delete[] alpha;
+    }
+    this->alpha = alpha_;
 }

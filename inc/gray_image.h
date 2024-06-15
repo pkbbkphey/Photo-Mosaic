@@ -6,11 +6,14 @@
 class GrayImage : public Image{
 private:
     int **pixels;
+    void copyPixels(const GrayImage& other);
 
 public:
     GrayImage();
     GrayImage(int width, int height, int **pixels);
-    ~GrayImage();
+    GrayImage(const GrayImage& other);  // Copy Constructor
+    GrayImage& operator=(const GrayImage& other);   // Copy Assignment Operator
+    virtual ~GrayImage();
     virtual bool LoadImage(string filename);
     virtual void DumpImage(string filename);
     virtual void Display_X_Server();

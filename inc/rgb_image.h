@@ -10,7 +10,9 @@ protected:
 public:
     RGBImage();
     RGBImage(int width, int height, int ***pixels);
-    ~RGBImage();
+    RGBImage(const RGBImage& other);    // Copy Constructor
+    RGBImage& operator=(const RGBImage& other); // Copy Assignment Operator
+    virtual ~RGBImage();    // destructor
     virtual bool LoadImage(string filename);
     virtual void DumpImage(string filename);
     virtual void Display_X_Server();

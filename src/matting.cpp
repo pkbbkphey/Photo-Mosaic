@@ -6,6 +6,9 @@
 #include <vector> // For std::vector
 #include <map> // For std::map
 
+extern bool FOR_VAL_GRIND;   // defined in main.cpp
+// #define EN_PAIR !FOR_VAL_GRIND
+
 void matting::setMode(int _mode){
     mode = _mode;
 }
@@ -35,23 +38,25 @@ void matting::setMode(int _mode){
 
 // Flood fill algorithm to eliminate non-enclosed area
 void floodFill(int **alpha, int w, int h, int x, int y) {
-    std::queue<std::pair<int, int>> q;
-    q.push({x, y});
+    if(! FOR_VAL_GRIND){
+        std::queue<std::pair<int, int>> q;
+        q.push({x, y});
 
-    while (!q.empty()) {
-        auto [cx, cy] = q.front();
-        q.pop();
+        while (!q.empty()) {
+            auto [cx, cy] = q.front();
+            q.pop();
 
-        // Not marking if it's on the edge
-        if (cx < 0 || cx >= w || cy < 0 || cy >= h || alpha[cy][cx] == 255 || alpha[cy][cx] == 128)
-            continue;
+            // Not marking if it's on the edge
+            if (cx < 0 || cx >= w || cy < 0 || cy >= h || alpha[cy][cx] == 255 || alpha[cy][cx] == 128)
+                continue;
 
-        alpha[cy][cx] = 128; // Mark as visited
+            alpha[cy][cx] = 128; // Mark as visited
 
-        q.push({cx + 1, cy});
-        q.push({cx - 1, cy});
-        q.push({cx, cy + 1});
-        q.push({cx, cy - 1});
+            q.push({cx + 1, cy});
+            q.push({cx - 1, cy});
+            q.push({cx, cy + 1});
+            q.push({cx, cy - 1});
+        }
     }
 }
 
@@ -108,7 +113,7 @@ void removeBoundaryBigFragments(int **alpha, int w, int h, int maxSize){
 void removeSmallFragments(int **alpha, int w, int h, int minSize) {
     int label = 1;
     std::map<int, int> componentSizes;
-    std::vector<std::vector<int>> labels(h, std::vector<int>(w, 0));
+    std::vector<std::vector<int>> labels(h, std::vector<int>(w, 0));    // 2D vector of h*w, filled with 0
 
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {
@@ -151,6 +156,7 @@ void removeSmallFragments(int **alpha, int w, int h, int minSize) {
         }
     }
 }
+
 
 // Image matting which preserve the object with sharp edges
 transparentImage* matting::applyMatting(string orignPath) {
@@ -229,7 +235,7 @@ transparentImage* matting::applyMatting(string orignPath) {
             std::fill(alpha[j], alpha[j] + w, 0); // Initialize alpha to fully transparent
         }
 
-        int EDGE_THREH;
+        int EDGE_THREH = 0;
         if(mode == remove_blurred_smoothly){
             // ---------- Grayscale edge detecton ------------
             // Convert the original RGB image into grayscale image
@@ -314,11 +320,9 @@ transparentImage* matting::applyMatting(string orignPath) {
             alpha[j][w-1] = 0;
         }
 
-        if(mode == remove_blurred){
-            // eliminate small dots or stripes
-            // removeSmallFragments(alpha, w, h, 300); // size threshold (pixels)
-            removeSmallFragments(alpha, w, h, w * h / 1000);
-        }
+        // eliminate small dots or stripes
+        // removeSmallFragments(alpha, w, h, 300); // size threshold (pixels)
+        removeSmallFragments(alpha, w, h, w * h / 1000);
 
         // Clean up edges array
         for (int j = 0; j < h; ++j) {
@@ -327,5 +331,21 @@ transparentImage* matting::applyMatting(string orignPath) {
         delete[] edges;
     }
 
-    return new transparentImage(w, h, pixels, alpha);
+    transparentImage* temp = new transparentImage(w, h, pixels, alpha);
+    // // Clean up pixels array
+    // if(pixels != nullptr){
+    //     for(int i = 0; i < h; ++i){
+    //         for(int j = 0; j < w; ++j) delete[] pixels[i][j];
+    //         delete[] pixels[i];
+    //     }
+    //     delete[] pixels;
+    //     pixels = nullptr;
+    // }
+    // // Clean up alpha array
+    // for (int j = 0; j < h; ++j) {
+    //     delete[] alpha[j];
+    // }
+    // delete[] alpha;
+
+    return temp;
 }

@@ -5,11 +5,11 @@
 
 class transparentImage : public RGBImage{
 private:
-    int **alpha;
+    int **alpha = nullptr;
 public:
     transparentImage();
     transparentImage(int width, int height, int ***pixels, int **alpha);
-    ~transparentImage();
+    virtual ~transparentImage();
     virtual void Display_X_Server();
     virtual void DumpImage(string filename);
     virtual void setAlpha(int **alpha);

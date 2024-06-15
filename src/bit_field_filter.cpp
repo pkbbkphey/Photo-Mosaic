@@ -9,19 +9,19 @@ using namespace std;
 photo_filter::photo_filter(){}
 
 void photo_filter::apply(int **pixels, int w, int h, int8_t option){
-    if(option & BOX)        applyBoxFilter(pixels, w, h);
-    if(option & SOBEL)      applySobelGradient(pixels, w, h);
-    if(option & CONTRAST)   applyContrastStretching(pixels, w, h);
-    if(option & MOSAIC)     applyMosaicFilter(pixels, w, h, 10);
-    if(option & MEDIAN)     applyMedianFilter(pixels, w, h);
+    if(option & BOX)        this->applyBoxFilter(pixels, w, h);
+    if(option & SOBEL)      this->applySobelGradient(pixels, w, h);
+    if(option & CONTRAST)   this->applyContrastStretching(pixels, w, h);
+    if(option & MOSAIC)     this->applyMosaicFilter(pixels, w, h, 10);
+    if(option & MEDIAN)     this->applyMedianFilter(pixels, w, h);
 }
 
 void photo_filter::apply(int ***pixels, int w, int h, int8_t option){
-    if(option & BOX)        applyBoxFilter(pixels, w, h);
-    if(option & SOBEL)      applySobelGradient(pixels, w, h);
-    if(option & CONTRAST)   applyContrastStretching(pixels, w, h);
-    if(option & MOSAIC)     applyMosaicFilter(pixels, w, h, 10);
-    if(option & MEDIAN)     applyMedianFilter(pixels, w, h);
+    if(option & BOX)        this->applyBoxFilter(pixels, w, h);
+    if(option & SOBEL)      this->applySobelGradient(pixels, w, h);
+    if(option & CONTRAST)   this->applyContrastStretching(pixels, w, h);
+    if(option & MOSAIC)     this->applyMosaicFilter(pixels, w, h, 10);
+    if(option & MEDIAN)     this->applyMedianFilter(pixels, w, h);
 }
 
 void photo_filter::apply_order(int **pixels, int w, int h, int order){

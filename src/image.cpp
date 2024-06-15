@@ -10,7 +10,7 @@ Image::Image(int width, int height): width(width), height(height) {
 
 }
 Image::~Image(){
-    
+    // cout << "~Image()\n";
 }
 
 bool Image::LoadImage(string filename){
