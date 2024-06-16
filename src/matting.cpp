@@ -2,9 +2,11 @@
 #include "transparent_image.h"
 #include "data_loader.h"
 #include "bit_field_filter.h"   // For applySobelGradient
-#include <queue> // For std::queue
-#include <vector> // For std::vector
-#include <map> // For std::map
+#include <queue> // For queue
+#include <vector> // For vector
+#include <map> // For map
+
+using namespace std;
 
 extern bool FOR_VAL_GRIND;   // defined in main.cpp
 // #define EN_PAIR !FOR_VAL_GRIND
@@ -39,7 +41,7 @@ void matting::setMode(int _mode){
 // Flood fill algorithm to eliminate non-enclosed area
 void floodFill(int **alpha, int w, int h, int x, int y) {
     if(! FOR_VAL_GRIND){
-        std::queue<std::pair<int, int>> q;
+        queue<pair<int, int>> q;
         q.push({x, y});
 
         while (!q.empty()) {
@@ -62,16 +64,17 @@ void floodFill(int **alpha, int w, int h, int x, int y) {
 
 // Connected component analysis to remove big fragments at the image boundary
 void removeBoundaryBigFragments(int **alpha, int w, int h, int maxSize){
+    cout << "      removing big fragments on boundary...\n";
     int label = 1;
-    std::map<int, int> componentSizes;
-    std::vector<std::vector<int>> labels(h, std::vector<int>(w, 0));
+    map<int, int> componentSizes;
+    vector<vector<int>> labels(h, vector<int>(w, 0));
 
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {
             if (((y < h/20) || (y > h*19/20) || (x < w/20) || (x > w*19/20)) &&
                     alpha[y][x] == 255 && labels[y][x] == 0) {
                 int size = 0;
-                std::queue<std::pair<int, int>> q;
+                queue<pair<int, int>> q;
                 q.push({x, y});
                 labels[y][x] = label;
 
@@ -80,7 +83,7 @@ void removeBoundaryBigFragments(int **alpha, int w, int h, int maxSize){
                     q.pop();
                     size++;
 
-                    std::vector<std::pair<int, int>> neighbors = {
+                    vector<pair<int, int>> neighbors = {
                         {cx + 1, cy}, {cx - 1, cy},
                         {cx, cy + 1}, {cx, cy - 1}
                     };
@@ -111,15 +114,16 @@ void removeBoundaryBigFragments(int **alpha, int w, int h, int maxSize){
 
 // Connected component analysis to remove small fragments
 void removeSmallFragments(int **alpha, int w, int h, int minSize) {
+    cout << "      removing small fragments...\n";
     int label = 1;
-    std::map<int, int> componentSizes;
-    std::vector<std::vector<int>> labels(h, std::vector<int>(w, 0));    // 2D vector of h*w, filled with 0
+    map<int, int> componentSizes;
+    vector<vector<int>> labels(h, vector<int>(w, 0));    // 2D vector of h*w, filled with 0
 
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {
             if (alpha[y][x] == 255 && labels[y][x] == 0) {
                 int size = 0;
-                std::queue<std::pair<int, int>> q;
+                queue<pair<int, int>> q;
                 q.push({x, y});
                 labels[y][x] = label;
 
@@ -128,7 +132,7 @@ void removeSmallFragments(int **alpha, int w, int h, int minSize) {
                     q.pop();
                     size++;
 
-                    std::vector<std::pair<int, int>> neighbors = {
+                    vector<pair<int, int>> neighbors = {
                         {cx + 1, cy}, {cx - 1, cy},
                         {cx, cy + 1}, {cx, cy - 1}
                     };
@@ -160,6 +164,7 @@ void removeSmallFragments(int **alpha, int w, int h, int minSize) {
 
 // Image matting which preserve the object with sharp edges
 transparentImage* matting::applyMatting(string orignPath) {
+    cout << "      starting...\n";
     Data_Loader temp_loader;
     int w, h;
     int ***pixels = temp_loader.Load_RGB(orignPath, &w, &h);
@@ -191,6 +196,7 @@ transparentImage* matting::applyMatting(string orignPath) {
         // }
         // avg_intensity /= (w * h * 3);
 
+        cout << "      removing background...\n";
         #define GRID_SEG 5
         for(int grid_y = 0; grid_y < h; grid_y += h/GRID_SEG){
             for(int grid_x = 0; grid_x < w; grid_x += w/GRID_SEG){
@@ -216,6 +222,9 @@ transparentImage* matting::applyMatting(string orignPath) {
                         }
                         else{
                             alpha[pos_y][pos_x] = 255;  // Fully opaque
+                            pixels[pos_y][pos_x][0] = 255;  // set text color to white
+                            pixels[pos_y][pos_x][1] = 255;
+                            pixels[pos_y][pos_x][2] = 255;
                         }
                     }
                 }
@@ -232,7 +241,7 @@ transparentImage* matting::applyMatting(string orignPath) {
         int **edges = new int *[h];
         for (int j = 0; j < h; ++j) {
             edges[j] = new int[w];
-            std::fill(alpha[j], alpha[j] + w, 0); // Initialize alpha to fully transparent
+            fill(alpha[j], alpha[j] + w, 0); // Initialize alpha to fully transparent
         }
 
         int EDGE_THREH = 0;
@@ -289,6 +298,7 @@ transparentImage* matting::applyMatting(string orignPath) {
             }
         }
 
+        cout << "      flood filling from boundary...\n";
         // Flood fill from borders to find non-enclosed areas
         for (int x = 0; x < w; ++x) {
             if (alpha[0][x] == 0) floodFill(alpha, w, h, x, 0);
@@ -332,20 +342,8 @@ transparentImage* matting::applyMatting(string orignPath) {
     }
 
     transparentImage* temp = new transparentImage(w, h, pixels, alpha);
-    // // Clean up pixels array
-    // if(pixels != nullptr){
-    //     for(int i = 0; i < h; ++i){
-    //         for(int j = 0; j < w; ++j) delete[] pixels[i][j];
-    //         delete[] pixels[i];
-    //     }
-    //     delete[] pixels;
-    //     pixels = nullptr;
-    // }
-    // // Clean up alpha array
-    // for (int j = 0; j < h; ++j) {
-    //     delete[] alpha[j];
-    // }
-    // delete[] alpha;
+
+    cout << "      finish!\n";
 
     return temp;
 }

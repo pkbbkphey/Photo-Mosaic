@@ -13,6 +13,7 @@ public:
     virtual void Display_X_Server();
     virtual void DumpImage(string filename);
     virtual void setAlpha(int **alpha);
+    virtual int **getAlpha();
 };
 
 #endif

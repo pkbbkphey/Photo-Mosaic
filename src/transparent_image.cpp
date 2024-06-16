@@ -63,3 +63,7 @@ void transparentImage::setAlpha(int **alpha_){
     }
     this->alpha = alpha_;
 }
+
+int **transparentImage::getAlpha(){
+    return alpha;
+}

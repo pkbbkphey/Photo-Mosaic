@@ -19,14 +19,11 @@ public:
     virtual void Display_CMD();
     virtual int **get_grayPixels();
     virtual int ***get_rgbPixels();
-    // template <class T>
-    // T get_pixels();
-    // int **get_pixels();
-    // virtual int ***get_pixels();
     int get_width();
     int get_height();
 
     virtual void setAlpha(int **alpha);
+    virtual int **getAlpha();
 };
 
 #endif

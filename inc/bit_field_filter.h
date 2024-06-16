@@ -16,7 +16,8 @@ public:
         SOBEL       = 0b00000010,
         CONTRAST    = 0b00000100,
         MOSAIC      = 0b00001000,
-        MEDIAN      = 0b00010000
+        MEDIAN      = 0b00010000,
+        ANISOTROPIC = 0b00100000
     };
     void applyAnisotropicDiffusion(int** pixels, int w, int h, int iterations, double lambda, double kappa);
 // private:     // Not setting these filters to private because some other algorithms use these filters
